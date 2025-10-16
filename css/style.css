@@ -27,6 +27,18 @@
     --spacing-xl: 5rem;
 }
 
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-primary: #e8e8e8;
+        --color-secondary: #b0b0b0;
+        --color-accent: #c4a57b;
+        --color-background: #1a1a1a;
+        --color-white: #2a2a2a;
+        --color-border: #3a3a3a;
+    }
+}
+
 html {
     scroll-behavior: smooth;
 }
