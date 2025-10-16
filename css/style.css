@@ -18,6 +18,7 @@
 
     --font-serif: 'Cormorant Garamond', serif;
     --font-sans: 'Montserrat', sans-serif;
+    --font-script: 'Great Vibes', cursive;
 
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
@@ -117,7 +118,10 @@ a:hover {
 
 .name {
     margin-bottom: var(--spacing-xs);
-    font-weight: 300;
+    font-family: var(--font-script);
+    font-weight: 400;
+    font-size: 4.5rem;
+    letter-spacing: 0.05em;
 }
 
 .title {
@@ -405,6 +409,10 @@ a:hover {
     .about .content p {
         text-align: left;
     }
+
+    .name {
+        font-size: 3.5rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -414,6 +422,10 @@ a:hover {
 
     h2 {
         font-size: 1.75rem;
+    }
+
+    .name {
+        font-size: 2.5rem;
     }
 
     .nav-list {
