@@ -142,7 +142,52 @@
             <div class="container">
                 <h2 class="section-title">Repertoire & Media</h2>
                 <div class="content">
-                    <p style="text-align: center; font-style: italic;">Coming soon!</p>
+                    <div class="media-grid">
+                        <div class="media-item" data-video-id="xeo6w_30bfk">
+                            <h3 class="item-title">Dream a Little Dream</h3>
+                            <p class="item-meta">2017</p>
+                            <button class="watch-btn">Watch Performance</button>
+                            <div class="video-container" style="display: none;">
+                                <div class="video-wrapper"></div>
+                            </div>
+                        </div>
+
+                        <div class="media-item" data-video-id="vJkVNmmb1_o">
+                            <h3 class="item-title">Adagio and Allegro</h3>
+                            <p class="item-meta">R. Schumann - 2009</p>
+                            <button class="watch-btn">Watch Performance</button>
+                            <div class="video-container" style="display: none;">
+                                <div class="video-wrapper"></div>
+                            </div>
+                        </div>
+
+                        <div class="media-item" data-video-id="sBUIaqehEtw">
+                            <h3 class="item-title">Sebben Crudele</h3>
+                            <p class="item-meta">Antonio Caldara - 2012</p>
+                            <button class="watch-btn">Watch Performance</button>
+                            <div class="video-container" style="display: none;">
+                                <div class="video-wrapper"></div>
+                            </div>
+                        </div>
+
+                        <div class="media-item" data-video-id="AzDcg_BQ0ms">
+                            <h3 class="item-title">Fields of Athenry</h3>
+                            <p class="item-meta">2016</p>
+                            <button class="watch-btn">Watch Performance</button>
+                            <div class="video-container" style="display: none;">
+                                <div class="video-wrapper"></div>
+                            </div>
+                        </div>
+
+                        <div class="media-item" data-video-id="nYjSnmt67eE">
+                            <h3 class="item-title">Ave Maria</h3>
+                            <p class="item-meta">2012</p>
+                            <button class="watch-btn">Watch Performance</button>
+                            <div class="video-container" style="display: none;">
+                                <div class="video-wrapper"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -202,6 +247,37 @@
                 link.classList.remove('active');
                 if (link.getAttribute('href').slice(1) === current) {
                     link.classList.add('active');
+                }
+            });
+        });
+
+        // YouTube video player functionality
+        document.querySelectorAll('.watch-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const mediaItem = this.closest('.media-item');
+                const videoContainer = mediaItem.querySelector('.video-container');
+                const videoWrapper = mediaItem.querySelector('.video-wrapper');
+                const videoId = mediaItem.getAttribute('data-video-id');
+
+                if (videoContainer.style.display === 'none') {
+                    // Show video and load YouTube iframe
+                    videoWrapper.innerHTML = `
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    `;
+                    videoContainer.style.display = 'block';
+                    this.textContent = 'Hide Video';
+                } else {
+                    // Hide video and remove iframe
+                    videoWrapper.innerHTML = '';
+                    videoContainer.style.display = 'none';
+                    this.textContent = 'Watch Performance';
                 }
             });
         });
