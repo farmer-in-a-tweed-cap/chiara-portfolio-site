@@ -41,6 +41,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 120px;
 }
 
 body {
@@ -579,6 +580,12 @@ a:hover {
 
     .nav.nav-collapsed .nav-list a::after {
         display: none;
+    }
+
+    /* Show active state when menu is expanded on mobile */
+    .nav.nav-collapsed.nav-expanded .nav-list a.active {
+        color: var(--color-accent);
+        font-weight: 500;
     }
 
     .social-links {

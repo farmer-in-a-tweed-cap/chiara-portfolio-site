@@ -246,42 +246,82 @@
             nav.classList.toggle('nav-expanded');
         });
 
-        // Close expanded menu when clicking a nav link
+        // Close expanded menu when clicking a nav link and handle scroll offset
         document.querySelectorAll('.nav-list a').forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
                 nav.classList.remove('nav-expanded');
+
+                // Get target section
+                const targetId = link.getAttribute('href').slice(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    // Calculate offset (nav height)
+                    const navHeight = nav.offsetHeight;
+                    const targetPosition = targetSection.offsetTop - navHeight;
+
+                    // Smooth scroll to position
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
 
-        window.addEventListener('scroll', () => {
-            let current = '';
+        function updateActiveSection() {
             const sections = document.querySelectorAll('.section');
             const navLinks = document.querySelectorAll('.nav-list a');
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
+            // Clear active states from all items first
+            navLinks.forEach(link => link.classList.remove('active'));
+            navItems.forEach(item => item.classList.remove('active-section'));
+
+            // If we're near the top (in header area), don't highlight anything
+            if (scrollTop < 200) {
+                return;
+            }
+
+            const navHeight = nav.offsetHeight;
+            const viewportMiddle = scrollTop + navHeight + 100;
+
+            let current = '';
+
+            // Determine which section we're in based on viewport position
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= sectionTop - 200) {
+                const sectionBottom = sectionTop + section.clientHeight;
+
+                // Section is current if the viewport middle is within it
+                if (viewportMiddle >= sectionTop && viewportMiddle < sectionBottom) {
                     current = section.getAttribute('id');
                 }
             });
 
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.classList.add('active');
-                }
-            });
+            // Only set active states if we have a current section
+            if (current) {
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href').slice(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
 
-            // Add active-section class to parent li for rolodex effect
-            navItems.forEach(item => {
-                item.classList.remove('active-section');
-                const link = item.querySelector('a');
-                if (link && link.getAttribute('href').slice(1) === current) {
-                    item.classList.add('active-section');
-                }
-            });
+                navItems.forEach(item => {
+                    const link = item.querySelector('a');
+                    if (link && link.getAttribute('href').slice(1) === current) {
+                        item.classList.add('active-section');
+                    }
+                });
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Update active section highlighting
+            updateActiveSection();
 
             // Collapse navigation on mobile when scrolling down
             if (window.innerWidth <= 768) {
@@ -292,6 +332,7 @@
                         nav.classList.remove('nav-expanded');
                     }
                 } else {
+                    // At top of page - clear all states
                     nav.classList.remove('nav-collapsed');
                     nav.classList.remove('nav-expanded');
                 }
