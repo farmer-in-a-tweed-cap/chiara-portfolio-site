@@ -139,7 +139,7 @@ a:hover {
     background-image: url("../bg.svg");
     background-repeat: repeat;
     background-size: auto;
-    opacity: 0.04;
+    opacity: 0.06;
     mix-blend-mode: multiply;
     filter: sepia(100%) saturate(50%) hue-rotate(20deg);
     pointer-events: none;
@@ -148,7 +148,7 @@ a:hover {
 @media (prefers-color-scheme: dark) {
     .header::before {
         filter: invert(1) sepia(100%) saturate(50%) hue-rotate(20deg);
-        opacity: 0.06;
+        opacity: 0.12;
     }
 }
 
@@ -184,6 +184,7 @@ a:hover {
     top: 0;
     z-index: 100;
     border-bottom: 1px solid var(--color-border);
+    transition: all 0.3s ease;
 }
 
 .nav-list {
@@ -193,6 +194,7 @@ a:hover {
     flex-wrap: wrap;
     padding: var(--spacing-sm) 0;
     gap: var(--spacing-sm);
+    transition: all 0.3s ease;
 }
 
 .nav-list li {
@@ -229,6 +231,10 @@ a:hover {
 .nav-list a:hover,
 .nav-list a.active {
     color: var(--color-accent);
+}
+
+.nav-toggle {
+    display: none;
 }
 
 /* ===================================
@@ -500,6 +506,79 @@ a:hover {
     .nav-list a {
         font-size: 0.75rem;
         padding: var(--spacing-xs) 0;
+    }
+
+    /* Mobile menu toggle button */
+    .nav-toggle {
+        display: none;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--color-accent);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.25rem;
+        z-index: 101;
+        transition: transform 0.3s ease;
+    }
+
+    .nav.nav-collapsed .nav-toggle {
+        display: block;
+    }
+
+    .nav.nav-expanded .nav-toggle {
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    /* Collapsed navigation on scroll - rolodex effect */
+    .nav.nav-collapsed .nav-list {
+        padding: 0.75rem 0;
+        overflow: hidden;
+        height: 3rem;
+        position: relative;
+    }
+
+    .nav.nav-collapsed.nav-expanded .nav-list {
+        height: auto;
+        overflow: visible;
+    }
+
+    .nav.nav-collapsed .nav-list li {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        margin: 0;
+    }
+
+    .nav.nav-collapsed.nav-expanded .nav-list li {
+        position: relative;
+        opacity: 1;
+        left: auto;
+        transform: none;
+        margin: 0 var(--spacing-xs);
+    }
+
+    .nav.nav-collapsed .nav-list li.active-section {
+        opacity: 1;
+        position: relative;
+        left: auto;
+        transform: none;
+        margin: 0;
+    }
+
+    .nav.nav-collapsed .nav-list a {
+        font-size: 0.75rem;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+    }
+
+    .nav.nav-collapsed .nav-list a::after {
+        display: none;
     }
 
     .social-links {

@@ -46,6 +46,7 @@
 
     <nav class="nav">
         <div class="container">
+            <button class="nav-toggle" aria-label="Toggle navigation menu">▼</button>
             <ul class="nav-list">
                 <li><a href="#about">Biography</a></li>
                 <li><a href="#experience">Experience</a></li>
@@ -234,11 +235,29 @@
             });
         });
 
-        // Add active state to navigation on scroll
+        // Navigation toggle and scroll behavior
+        const nav = document.querySelector('.nav');
+        const navToggle = document.querySelector('.nav-toggle');
+        const navItems = document.querySelectorAll('.nav-list li');
+        let lastScrollTop = 0;
+
+        // Toggle menu expansion on mobile
+        navToggle.addEventListener('click', () => {
+            nav.classList.toggle('nav-expanded');
+        });
+
+        // Close expanded menu when clicking a nav link
+        document.querySelectorAll('.nav-list a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('nav-expanded');
+            });
+        });
+
         window.addEventListener('scroll', () => {
             let current = '';
             const sections = document.querySelectorAll('.section');
             const navLinks = document.querySelectorAll('.nav-list a');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -254,6 +273,34 @@
                     link.classList.add('active');
                 }
             });
+
+            // Add active-section class to parent li for rolodex effect
+            navItems.forEach(item => {
+                item.classList.remove('active-section');
+                const link = item.querySelector('a');
+                if (link && link.getAttribute('href').slice(1) === current) {
+                    item.classList.add('active-section');
+                }
+            });
+
+            // Collapse navigation on mobile when scrolling down
+            if (window.innerWidth <= 768) {
+                if (scrollTop > 100) {
+                    nav.classList.add('nav-collapsed');
+                    // Auto-collapse when scrolling if manually expanded
+                    if (scrollTop > lastScrollTop) {
+                        nav.classList.remove('nav-expanded');
+                    }
+                } else {
+                    nav.classList.remove('nav-collapsed');
+                    nav.classList.remove('nav-expanded');
+                }
+            } else {
+                nav.classList.remove('nav-collapsed');
+                nav.classList.remove('nav-expanded');
+            }
+
+            lastScrollTop = scrollTop;
         });
 
         // YouTube video player functionality
